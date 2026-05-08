@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar-nft.js"></script>
+  <script>
+    AFRAME.registerComponent('spin-y', {
+      schema: { speed: { type: 'number', default: 45 } },
+      tick: function (time, delta) {
+        this.el.object3D.rotation.y += (this.data.speed * delta / 1000) * (Math.PI / 180);
+      }
+    });
+  </script>
+
+  <style>
+    body { margin: 0; overflow: hidden; }
+    #info-panel {
+      position: fixed;
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%);
+      width: 300px;
+      background: rgba(17, 17, 17, 0.92);
+      border: 1px solid rgba(245, 232, 199, 0.3);
+      border-radius: 8px;
+      padding: 0;
+      font-family: Georgia, serif;
+      color: #ddd;
+      z-index: 999;
+      pointer-events: none;
+    }
+    #info-panel .panel-title {
+      background: #1a1a1a;
+      color: #F5E8C7;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(245, 232, 199, 0.4);
+      border-radius: 8px 8px 0 0;
+    }
+    #info-panel .panel-body {
+      padding: 16px;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+    #info-panel .panel-body p { margin: 0 0 12px 0; }
+    #info-panel .panel-body p:last-child { margin-bottom: 0; }
+  </style>
+</head>
+<body>
+
+  <div id="info-panel">
+    <div class="panel-title">Head of a Bearded Man</div>
+    <div class="panel-body">
+      <p>A marble portrait head depicting a mature male figure with a beard.</p>
+      <p>This Roman-era sculpture shows naturalistic facial detailing typical of veristic portraiture from North Africa.</p>
+      <p>Discovered at Jebel F'kirine (Cap Bon, Tunisia), it reflects the artistic heritage of Africa Proconsularis.</p>
+      <p>Date: 3rd century AD</p>
+    </div>
+  </div>
+
+  <!-- ✅ Use nft (Natural Feature Tracking) instead of marker -->
+  <a-scene
+    embedded
+    arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+    vr-mode-ui="enabled: false">
+
+    <a-entity light="type: ambient; intensity: 0.8"></a-entity>
+    <a-entity light="type: directional; intensity: 1.1" position="1 4 2"></a-entity>
+
+    <!-- ✅ Replace with YOUR image path (no extension needed) -->
+    <a-nft
+      type="nft"
+      url="statu1/marker"
+      smooth="true"
+      smoothCount="10"
+      smoothTolerance="0.01"
+      smoothThreshold="5">
+
+      <a-entity spin-y="speed: 45">
+        <a-gltf-model
+          src="statu1/textured.glb"
+          scale="2 2 2"
+          rotation="-90 0 0"
+          position="0 0 0">
+        </a-gltf-model>
+      </a-entity>
+
+    </a-nft>
+
+    <a-entity camera></a-entity>
+  </a-scene>
+
+</body>
+</html> 
