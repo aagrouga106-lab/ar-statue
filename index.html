@@ -14,18 +14,20 @@
 
     // Show panel only when marker is found, hide when lost
     AFRAME.registerComponent('marker-handler', {
-      init: function () {
-        const panel = document.getElementById('info-panel');
-        this.el.addEventListener('markerFound', () => {
-          panel.style.opacity = '1';
-          panel.style.pointerEvents = 'auto';
-        });
-        this.el.addEventListener('markerLost', () => {
-          panel.style.opacity = '0';
-          panel.style.pointerEvents = 'none';
-        });
-      }
+  init: function () {
+    const panel = document.getElementById('info-panel');
+    
+    // NFT uses these events instead of markerFound/markerLost
+    this.el.addEventListener('targetFound', () => {
+      panel.style.opacity = '1';
+      panel.style.pointerEvents = 'auto';
     });
+    this.el.addEventListener('targetLost', () => {
+      panel.style.opacity = '0';
+      panel.style.pointerEvents = 'none';
+    });
+  }
+});
   </script>
 
   <style>
