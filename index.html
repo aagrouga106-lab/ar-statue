@@ -108,24 +108,24 @@
     <a-entity light="type: directional; intensity: 1.1" position="1 4 2"></a-entity>
 
     <a-nft
-      type="nft"
-      url="marker"
-      smooth="true"
-      smoothCount="10"
-      smoothTolerance="0.01"
-      smoothThreshold="5"
-      marker-handler>
+  type="nft"
+  url="marker"
+  smooth="true"
+  smoothCount="10"
+  smoothTolerance="0.01"
+  smoothThreshold="5"
+  marker-handler>
 
-      <a-entity spin-y="speed: 45">
-        <a-gltf-model
-          src="textured.glb"
-          scale="2 2 2"
-          rotation="-90 0 0"
-          position="0 0 0">
-        </a-gltf-model>
-      </a-entity>
+  <a-entity spin-y="speed: 45">
+    <a-gltf-model
+      src="highres.glb"
+      scale="50 50 50"
+      rotation="-90 0 0"
+      position="0 0 0">
+    </a-gltf-model>
+  </a-entity>
 
-    </a-nft>
+</a-nft>
 
     <a-entity camera></a-entity>
   </a-scene>
