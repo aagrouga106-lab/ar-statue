@@ -2,108 +2,118 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-
-  <script>
-    AFRAME.registerComponent('canvas-ui', {
-      init: function () {
-        // Create canvas
-        const canvas = document.createElement('canvas');
-        canvas.width = 512;
-        canvas.height = 640;
-        const ctx = canvas.getContext('2d');
-
-        // Background
-        ctx.fillStyle = '#111111';
-        ctx.fillRect(0, 0, 512, 640);
-
-        // Title bar
-        ctx.fillStyle = '#1a1a1a';
-        ctx.fillRect(0, 0, 512, 72);
-
-        // Title text
-        ctx.fillStyle = '#F5E8C7';
-        ctx.font = 'bold 28px Georgia, serif';
-        ctx.textAlign = 'center';
-        ctx.fillText('Portrait of a Woman on White Marble', 256, 46);
-
-        // Divider
-        ctx.strokeStyle = 'rgba(245, 232, 199, 0.4)';
-        ctx.lineWidth = 1.5;
-        ctx.beginPath();
-        ctx.moveTo(0, 73);
-        ctx.lineTo(512, 73);
-        ctx.stroke();
-
-        // Description text - word wrap helper
-        ctx.fillStyle = '#dddddd';
-        ctx.font = '20px Georgia, serif';
-        ctx.textAlign = 'left';
-
-        const lines = [
-  'A white marble portrait head of a woman.',
-  '',
-  'This Roman-era sculpture shows refined',
-  'facial detailing typical of female',
-  'portraiture from North Africa.',
-  '',
-  'Discovered in the rubble of the House',
-  'of the Nymphs at Neapolis (ancient',
-  'Nabeul), it reflects the artistic',
-  'heritage of Africa Proconsularis.',
-  '',
-  'Date: 4th century AD'
-];
-
-        let y = 112;
-        lines.forEach(line => {
-          ctx.fillText(line, 24, y);
-          y += 30;
-        });
-
-        // Apply as texture
-        const texture = new THREE.CanvasTexture(canvas);
-        const mat = new THREE.MeshBasicMaterial({ map: texture, transparent: true, side: THREE.DoubleSide });
-        const geo = new THREE.PlaneGeometry(2.6, 3.25);
-        const mesh = new THREE.Mesh(geo, mat);
-        this.el.object3D.add(mesh);
-      },
-
-      tick: function () {
-        // Face camera
-        const camera = this.el.sceneEl.camera;
-        if (!camera) return;
-        const pos = new THREE.Vector3();
-        camera.getWorldPosition(pos);
-        this.el.object3D.lookAt(pos);
-      }
-    });
-  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Portrait of a Woman on White Marble</title>
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #111;
+      font-family: Georgia, serif;
+      color: #ddd;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    header {
+      width: 100%;
+      background: #1a1a1a;
+      border-bottom: 1px solid rgba(245, 232, 199, 0.3);
+      padding: 16px;
+      text-align: center;
+    }
+    header h1 { color: #F5E8C7; font-size: 20px; }
+    header p { color: #aaa; font-size: 12px; margin-top: 4px; }
+    model-viewer {
+      width: 100%;
+      height: 60vh;
+      background: #1a1a1a;
+    }
+    .info-panel {
+      width: 100%;
+      max-width: 600px;
+      padding: 20px;
+    }
+    .info-panel p {
+      margin-bottom: 12px;
+      font-size: 14px;
+      line-height: 1.8;
+      color: #ccc;
+    }
+    .info-panel .date { color: #F5E8C7; font-weight: bold; }
+    .hint {
+      text-align: center;
+      font-size: 12px;
+      color: #888;
+      margin-top: 8px;
+      margin-bottom: 16px;
+    }
+  </style>
 </head>
+<body>
 
-<body style="margin:0; overflow:hidden;">
+  <header>
+    <h1>Portrait of a Woman on White Marble</h1>
+    <p>Interactive 3D Model — Rotate & View in AR</p>
+  </header>
 
-<a-scene embedded arjs>
+  <model-viewer
+    src="https://aagrouga106-lab.github.io/ar-statue/statu2/textured.glb"
+    ar
+    ar-modes="webxr scene-viewer quick-look"
+    camera-controls
+    touch-action="pan-y"
+    auto-rotate
+    auto-rotate-delay="0"
+    rotation-per-second="30deg"
+    shadow-intensity="2"
+    shadow-softness="1"
+    exposure="0.8"
+    environment-image="neutral"
+    ar-placement="floor"
+    scale="0.3 0.3 0.3"
+    alt="Portrait of a Woman on White Marble">
 
-  <a-entity light="type: ambient; intensity: 0.8"></a-entity>
-  <a-entity light="type: directional; intensity: 1.1" position="1 4 2"></a-entity>
+    <script>
+      document.querySelector('model-viewer').addEventListener('load', (ev) => {
+        const modelViewer = ev.target;
+        const material = modelViewer.model.materials[0];
+        material.pbrMetallicRoughness.setBaseColorFactor([0.75, 0.70, 0.62, 1]);
+        material.pbrMetallicRoughness.setMetallicFactor(0.0);
+        material.pbrMetallicRoughness.setRoughnessFactor(1.0);
+      });
+    </script>
 
-  <a-marker preset="hiro">
+    <button slot="ar-button" style="
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #F5E8C7;
+      color: #111;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 24px;
+      font-family: Georgia, serif;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    ">
+      📱 View in AR
+    </button>
 
-    <!-- 3D STATUE -->
-    <a-entity rotation="-90 0 0">
-      <a-gltf-model src="statu2/textured.glb" scale="2 2 2"></a-gltf-model>
-    </a-entity>
+  </model-viewer>
 
-    <!-- UI: single entity, canvas texture, faces camera -->
-    <a-entity canvas-ui position="2.8 1.5 0"></a-entity>
+  <p class="hint">👆 Drag to rotate • Pinch to zoom • Tap "View in AR" to place on surface</p>
 
-  </a-marker>
-
-  <a-entity camera></a-entity>
-
-</a-scene>
+  <div class="info-panel">
+    <p>A white marble portrait head of a woman.</p>
+    <p>This Roman-era sculpture shows refined facial detailing typical of female portraiture from North Africa.</p>
+    <p>Discovered in the rubble of the House of the Nymphs at Neapolis (ancient Nabeul), it reflects the artistic heritage of Africa Proconsularis.</p>
+    <p class="date">Date: 4th century AD</p>
+  </div>
 
 </body>
 </html>
