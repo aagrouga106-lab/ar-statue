@@ -7,10 +7,10 @@
   <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { 
+    body {
       background: #111;
       font-family: Georgia, serif;
-      color: #ddd; 
+      color: #ddd;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -23,16 +23,8 @@
       padding: 16px;
       text-align: center;
     }
-    header h1 {
-      color: #F5E8C7;
-      font-size: 20px;
-      font-weight: bold;
-    }
-    header p {
-      color: #aaa;
-      font-size: 12px;
-      margin-top: 4px; 
-    }
+    header h1 { color: #F5E8C7; font-size: 20px; }
+    header p { color: #aaa; font-size: 12px; margin-top: 4px; }
     model-viewer {
       width: 100%;
       height: 60vh;
@@ -49,10 +41,7 @@
       line-height: 1.8;
       color: #ccc;
     }
-    .info-panel .date {
-      color: #F5E8C7;
-      font-weight: bold;
-    }
+    .info-panel .date { color: #F5E8C7; font-weight: bold; }
     .hint {
       text-align: center;
       font-size: 12px;
@@ -70,7 +59,8 @@
   </header>
 
   <model-viewer
-    src="https://aagrouga106-lab.github.io/ar-statue/highres.glb"
+    src="https://aagrouga106-lab.github.io/ar-statue/textured.glb"
+    ios-src="https://aagrouga106-lab.github.io/ar-statue/textured.usdz"
     ar
     ar-modes="webxr scene-viewer quick-look"
     camera-controls
@@ -79,13 +69,31 @@
     auto-rotate-delay="0"
     rotation-per-second="30deg"
     shadow-intensity="1"
-    exposure="1"
+    exposure="1.5"
+    environment-image="legacy"
     ar-scale="fixed"
     scale="0.05 0.05 0.05"
-    poster="https://aagrouga106-lab.github.io/ar-statue/marker.jpeg"
-    alt="Head of a Bearded Man - Roman era sculpture">
+    alt="Head of a Bearded Man">
 
-    <!-- AR button -->
+    <!-- Apply marble texture via CSS -->
+    <style>
+      :host {
+        --poster-color: #c8b89a;
+      }
+    </style>
+
+    <!-- Marble color overlay using model-viewer API -->
+    <script>
+      document.querySelector('model-viewer').addEventListener('load', (ev) => {
+        const modelViewer = ev.target;
+        const material = modelViewer.model.materials[0];
+        // Set warm marble/stone color
+        material.pbrMetallicRoughness.setBaseColorFactor([0.78, 0.72, 0.65, 1]);
+        material.pbrMetallicRoughness.setMetallicFactor(0.0);
+        material.pbrMetallicRoughness.setRoughnessFactor(0.8);
+      });
+    </script>
+
     <button slot="ar-button" style="
       position: absolute;
       bottom: 20px;
@@ -107,7 +115,7 @@
 
   </model-viewer>
 
-  <p class="hint">👆 Drag to rotate • Pinch to zoom • Tap "View in AR" to place on a surface</p>
+  <p class="hint">👆 Drag to rotate • Pinch to zoom • Tap "View in AR" to place on surface</p>
 
   <div class="info-panel">
     <p>A marble portrait head depicting a mature male figure with a beard.</p>
