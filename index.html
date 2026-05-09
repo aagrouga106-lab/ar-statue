@@ -88,10 +88,10 @@
       document.querySelector('model-viewer').addEventListener('load', (ev) => {
         const modelViewer = ev.target;
         const material = modelViewer.model.materials[0];
-        // Set warm marble/stone color
-        material.pbrMetallicRoughness.setBaseColorFactor([0.78, 0.72, 0.65, 1]);
+        // Stone color — no glow, matte finish
+        material.pbrMetallicRoughness.setBaseColorFactor([0.75, 0.70, 0.62, 1]);
         material.pbrMetallicRoughness.setMetallicFactor(0.0);
-        material.pbrMetallicRoughness.setRoughnessFactor(0.8);
+        material.pbrMetallicRoughness.setRoughnessFactor(1.0);
       });
     </script>
 
