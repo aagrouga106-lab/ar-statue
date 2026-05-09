@@ -2,15 +2,118 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Head of a Bearded Man</title>
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #111;
+      font-family: Georgia, serif;
+      color: #ddd;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    header {
+      width: 100%;
+      background: #1a1a1a;
+      border-bottom: 1px solid rgba(245, 232, 199, 0.3);
+      padding: 16px;
+      text-align: center;
+    }
+    header h1 {
+      color: #F5E8C7;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    header p {
+      color: #aaa;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+    model-viewer {
+      width: 100%;
+      height: 60vh;
+      background: #1a1a1a;
+    }
+    .info-panel {
+      width: 100%;
+      max-width: 600px;
+      padding: 20px;
+    }
+    .info-panel p {
+      margin-bottom: 12px;
+      font-size: 14px;
+      line-height: 1.8;
+      color: #ccc;
+    }
+    .info-panel .date {
+      color: #F5E8C7;
+      font-weight: bold;
+    }
+    .hint {
+      text-align: center;
+      font-size: 12px;
+      color: #888;
+      margin-top: 8px;
+      margin-bottom: 16px;
+    }
+  </style>
 </head>
-<body style="margin:0; overflow:hidden;">
-  <a-scene embedded arjs>
-    <a-marker preset="hiro">
-      <a-box position="0 0.5 0" color="red"></a-box>
-    </a-marker>
-    <a-entity camera></a-entity>
-  </a-scene>
+<body>
+
+  <header>
+    <h1>Head of a Bearded Man</h1>
+    <p>Interactive 3D Model — Rotate & View in AR</p>
+  </header>
+
+  <model-viewer
+    src="https://aagrouga106-lab.github.io/ar-statue/highres.glb"
+    ar
+    ar-modes="webxr scene-viewer quick-look"
+    camera-controls
+    touch-action="pan-y"
+    auto-rotate
+    auto-rotate-delay="0"
+    rotation-per-second="30deg"
+    shadow-intensity="1"
+    exposure="1"
+    ar-scale="fixed"
+    poster="https://aagrouga106-lab.github.io/ar-statue/marker.jpeg"
+    alt="Head of a Bearded Man - Roman era sculpture">
+
+    <!-- AR button -->
+    <button slot="ar-button" style="
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #F5E8C7;
+      color: #111;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 24px;
+      font-family: Georgia, serif;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    ">
+      📱 View in AR
+    </button>
+
+  </model-viewer>
+
+  <p class="hint">👆 Drag to rotate • Pinch to zoom • Tap "View in AR" to place on a surface</p>
+
+  <div class="info-panel">
+    <p>A marble portrait head depicting a mature male figure with a beard.</p>
+    <p>This Roman-era sculpture shows naturalistic facial detailing typical of veristic portraiture from North Africa.</p>
+    <p>Discovered at Jebel F'kirine (Cap Bon, Tunisia), it reflects the artistic heritage of Africa Proconsularis.</p>
+    <p class="date">Date: 3rd century AD</p>
+  </div>
+
 </body>
 </html>
