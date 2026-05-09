@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+
+  <script>
+    AFRAME.registerComponent('canvas-ui', {
+      init: function () {
+        // Create canvas
+        const canvas = document.createElement('canvas');
+        canvas.width = 512;
+        canvas.height = 640;
+        const ctx = canvas.getContext('2d');
+
+        // Background
+        ctx.fillStyle = '#111111';
+        ctx.fillRect(0, 0, 512, 640);
+
+        // Title bar
+        ctx.fillStyle = '#1a1a1a';
+        ctx.fillRect(0, 0, 512, 72);
+
+        // Title text
+        ctx.fillStyle = '#F5E8C7';
+        ctx.font = 'bold 28px Georgia, serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('Portrait of a Woman on White Marble', 256, 46);
+
+        // Divider
+        ctx.strokeStyle = 'rgba(245, 232, 199, 0.4)';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(0, 73);
+        ctx.lineTo(512, 73);
+        ctx.stroke();
+
+        // Description text - word wrap helper
+        ctx.fillStyle = '#dddddd';
+        ctx.font = '20px Georgia, serif';
+        ctx.textAlign = 'left';
+
+        const lines = [
+  'A white marble portrait head of a woman.',
+  '',
+  'This Roman-era sculpture shows refined',
+  'facial detailing typical of female',
+  'portraiture from North Africa.',
+  '',
+  'Discovered in the rubble of the House',
+  'of the Nymphs at Neapolis (ancient',
+  'Nabeul), it reflects the artistic',
+  'heritage of Africa Proconsularis.',
+  '',
+  'Date: 4th century AD'
+];
+
+        let y = 112;
+        lines.forEach(line => {
+          ctx.fillText(line, 24, y);
+          y += 30;
+        });
+
+        // Apply as texture
+        const texture = new THREE.CanvasTexture(canvas);
+        const mat = new THREE.MeshBasicMaterial({ map: texture, transparent: true, side: THREE.DoubleSide });
+        const geo = new THREE.PlaneGeometry(2.6, 3.25);
+        const mesh = new THREE.Mesh(geo, mat);
+        this.el.object3D.add(mesh);
+      },
+
+      tick: function () {
+        // Face camera
+        const camera = this.el.sceneEl.camera;
+        if (!camera) return;
+        const pos = new THREE.Vector3();
+        camera.getWorldPosition(pos);
+        this.el.object3D.lookAt(pos);
+      }
+    });
+  </script>
+</head>
+
+<body style="margin:0; overflow:hidden;">
+
+<a-scene embedded arjs>
+
+  <a-entity light="type: ambient; intensity: 0.8"></a-entity>
+  <a-entity light="type: directional; intensity: 1.1" position="1 4 2"></a-entity>
+
+  <a-marker preset="hiro">
+
+    <!-- 3D STATUE -->
+    <a-entity rotation="-90 0 0">
+      <a-gltf-model src="statu2/textured.glb" scale="2 2 2"></a-gltf-model>
+    </a-entity>
+
+    <!-- UI: single entity, canvas texture, faces camera -->
+    <a-entity canvas-ui position="2.8 1.5 0"></a-entity>
+
+  </a-marker>
+
+  <a-entity camera></a-entity>
+
+</a-scene>
+
+</body>
+</html>
